@@ -47,7 +47,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * This function is executed when this OpMode is selected from the Driver Station.
  */
 
-@TeleOp(name="Hazards_2024-2025_TeleOp")
+@TeleOp(name="Hazards_2024-2025_TeleOp", group="Linear OpMode")
 public class BasicOmniOpMode_Linear extends LinearOpMode {
     private static final double spinner_max = 0.5;
     // Declare OpMode members for each of the 4 motors.
@@ -56,19 +56,22 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
     private DcMotor leftBackDrive = null;
     private DcMotor rightFrontDrive = null;
     private DcMotor rightBackDrive = null;
+    private DcMotor Linear_up = null;
+    private DcMotor linear_front = null;
+   // private CRServo drone_servo;2
+   // private DcMotor pixesl_extender = null;
+    private Servo servo_grab;
+  //  private Servo servo_grab2;
+ //   private CRServo servo_rotate1;
+  //  private CRServo servo_rotate2;
+  //  private CRServo Suspensionservo;
+  //  private DcMotor Suspensionmotor = null;
 
-   /* private CRServo drone_servo;2
-    private DcMotor pixesl_extender = null;
-    private Servo servo_grab1;
-    private Servo servo_grab2;
-    private CRServo servo_rotate1;
-    private CRServo servo_rotate2;
-    private CRServo Suspensionservo;
-    private DcMotor Suspensionmotor = null;
+
     boolean x_changed = false;
     boolean dpad_l2_changed = false;
     boolean dpad_r2_changed = false;
-    */
+
 
 
 
@@ -81,11 +84,13 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
         leftBackDrive = hardwareMap.get(DcMotor.class, "drivelb");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "driverf");
         rightBackDrive = hardwareMap.get(DcMotor.class, "driverb");
+        Linear_up =hardwareMap.get(DcMotor.class, "Slide_up");
+        servo_grab = hardwareMap.get(Servo.class, "SGrab");
+        linear_front = hardwareMap.get(DcMotor.class, "Slide_forward");
        /** drone_servo = hardwareMap.get(CRServo.class, "drone_servo");
         pixesl_extender = hardwareMap.get(DcMotor.class, "articulator");
         Suspensionservo = hardwareMap.get(CRServo.class, "Suspensionservo");
-        Suspensionmotor = hardwareMap.get(DcMotor.class, "Suspensionmotor");
-        servo_grab1 = hardwareMap.get(Servo.class, "SGrab1");
+        Suspensionmotor = hardwareMap.get(DcMotor.class, "Suspensionmotor");;
         servo_grab2 = hardwareMap.get(Servo.class, "SGrab2");
         servo_rotate1 = hardwareMap.get(CRServo.class, "SRotate1");
         servo_rotate2 = hardwareMap.get(CRServo.class, "SRotate2");**/
@@ -105,6 +110,9 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
         leftBackDrive.setDirection(DcMotor.Direction.REVERSE);
         rightFrontDrive.setDirection(DcMotor.Direction.FORWARD);
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
+        linear_front.setDirection(DcMotorSimple.Direction.FORWARD);
+
+        Linear_up.setDirection(DcMotor.Direction.REVERSE);
         //pixesl_extender.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
        //ixesl_extender.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
        //uspensionmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
@@ -124,9 +132,9 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
             double max;
 
             // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
-            double axial = -gamepad1.right_stick_y;  // Note: pushing stick forward gives negative value
-            double lateral = gamepad1.right_stick_x;
-            double yaw = gamepad1.left_stick_x;
+            double axial = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
+            double lateral = gamepad1.left_stick_x;
+            double yaw = gamepad1.right_stick_x;
 
             // Combine the joystick requests for each axis-motion to determine each wheel's power.
             // Set up a variable for each drive wheel to save the power level for telemetry.
@@ -160,6 +168,21 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
             rightBackDrive.setPower(RBP);
             //Spinner Example Code
 
+            if (gamepad1.a) { Linear_up.setPower(0.6);
+            } else {Linear_up.setPower(0);}
+            if(gamepad1.b) {
+                Linear_up.setPower(-0.6);
+            }else {Linear_up.setPower(0);
+            }
+            // Start
+            if (gamepad1.x) { linear_front.setPower(1);}
+
+
+
+
+
+
+            //End
           /*if (gamepad2.dpad_up) {
                 pixesl_extender.setPower(1.0);
             } else if (gamepad2.dpad_down) {
@@ -181,18 +204,19 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
                 Suspensionmotor.setPower(-1);
             } else {
                 Suspensionmotor.setPower(0);
-            /
-            if (gamepad2.left_bumper && !dpad_l2_changed) {
-                if (servo_grab1.getPosition() == 0.1) servo_grab1.setPosition(0.8);
-                else servo_grab1.setPosition(0.1);
+            */
+           /* if (gamepad2.left_bumper && !dpad_l2_changed) {
+                if (servo_grab.getPosition() == 0.1) servo_grab.setPosition(0.8);
+                else servo_grab.setPosition(0.1);
                 dpad_l2_changed = true;
             } else if (!gamepad2.left_bumper) dpad_l2_changed = false;
 
-            if (gamepad2.right_bumper && !dpad_r2_changed) {
-                if (servo_grab2.getPosition() == 0.1) servo_grab2.setPosition(0.8);
-                else servo_grab2.setPosition(0.1);
-                dpad_r2_changed = true;*/
-
+            if (gamepad2.right_bumper && !dpad_l2_changed) {
+                if (servo_grab.getPosition() == 0.3) servo_grab.setPosition(0.6);
+                else servo_grab.setPosition(0.3);
+                dpad_l2_changed = true;
+            } else if (!gamepad2.right_bumper) dpad_l2_changed = false;
+               */
 
             // This is test code:
             //
@@ -203,6 +227,9 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
             //   2) Then make sure they run in the correct direction by modifying the
             //      the setDirection() calls above.
             // Once the correct motors move in the correct direction re-comment this code.
+            //servo_grab.
+            //if (gamepad2.left_stick_button) {servo_grab.setPosition(gamepad2.left_stick_y);}
+            telemetry.update();
 
             /*
             leftFrontPower  = gamepad1.x ? 1.0 : 0.0;  // X gamepad
