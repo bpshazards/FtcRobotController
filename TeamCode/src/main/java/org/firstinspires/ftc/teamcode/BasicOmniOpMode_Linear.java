@@ -131,6 +131,8 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
         while (opModeIsActive()) {
             double max;
 
+
+
             // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
             double axial = -gamepad1.left_stick_y;  // Note: pushing stick forward gives negative value
             double lateral = gamepad1.left_stick_x;
@@ -168,15 +170,31 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
             rightBackDrive.setPower(RBP);
             //Spinner Example Code
 
-            if (gamepad1.a) { Linear_up.setPower(0.6);
-            } else {Linear_up.setPower(0);}
+            if (gamepad1.a) {
+                Linear_up.setPower(0.6);
+            } else {
+                Linear_up.setPower(0);}
             if(gamepad1.b) {
                 Linear_up.setPower(-0.6);
-            }else {Linear_up.setPower(0);
+            }else {
+                Linear_up.setPower(0);
             }
             // Start
-            if (gamepad1.x) { linear_front.setPower(1);}
 
+
+            if (gamepad1.x) {
+                linear_front.setPower(1);
+            } else if (gamepad1.y) {
+                linear_front.setPower(-1);
+            }else {
+                linear_front.setPower(0);}
+
+            if (gamepad1.a) {
+                linear_front.setPower(1);
+            } else if (gamepad1.b) {
+                linear_front.setPower(-1);
+            }else {
+                linear_front.setPower(0);}
 
 
 
@@ -228,7 +246,14 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
             //      the setDirection() calls above.
             // Once the correct motors move in the correct direction re-comment this code.
             //servo_grab.
-            //if (gamepad2.left_stick_button) {servo_grab.setPosition(gamepad2.left_stick_y);}
+            if (gamepad2.dpad_up) {
+                servo_grab.setPosition(0);
+            }else if(gamepad2.dpad_down) {
+                servo_grab.setPosition(1);
+            }else {
+                servo_grab.setPosition(.5);
+            }
+
             telemetry.update();
 
             /*
