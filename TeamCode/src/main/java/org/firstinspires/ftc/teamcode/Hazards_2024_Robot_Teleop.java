@@ -75,6 +75,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 @TeleOp(name="2024_Hazard", group="Linear OpMode")
 //@Disabled
 public class Hazards_2024_Robot_Teleop extends LinearOpMode {
+
     // Declare OpMode members for each of the 4 motors.
     private ElapsedTime runtime = new ElapsedTime();
     private DcMotor leftFrontDrive = null;
@@ -194,7 +195,7 @@ public class Hazards_2024_Robot_Teleop extends LinearOpMode {
             leftFrontPower  = gamepad1.x ? 1.0 : 0.0;  // X gamepad
             leftBackPower   = gamepad1.a ? 1.0 : 0.0;  // A gamepad
             rightFrontPower = gamepad1.y ? 1.0 : 0.0;  // Y gamepad
-            rightBackPower  = gamepad1.b ? 1.0 : 0.0;  // B ga4dmepad
+            rightBackPower  = gamepad1.b ? 1.0 : 0.0;  // B gamepad
             */
 
             // Send calculated power to wheels
@@ -228,7 +229,6 @@ public class Hazards_2024_Robot_Teleop extends LinearOpMode {
             }else if (gamepad2.dpad_right && Linear_Forward.getCurrentPosition()>-2034) {
                 Linear_Forward.setPower(-.75);
             }else {
-
                 Linear_Forward.setPower(0);
             }
 

@@ -47,7 +47,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * This function is executed when this OpMode is selected from the Driver Station.
  */
 
-@TeleOp(name="Hazards_2024-2025_TeleOp", group="Linear OpMode")
+@TeleOp(name="Deve_Hazards_2024-2025_TeleOp", group="Linear OpMode")
 public class BasicOmniOpMode_Linear extends LinearOpMode {
     private static final double spinner_max = 0.5;
     // Declare OpMode members for each of the 4 motors.
@@ -58,21 +58,23 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
     private DcMotor rightBackDrive = null;
     private DcMotor Linear_up = null;
     private DcMotor linear_front = null;
-   // private CRServo drone_servo;2
-   // private DcMotor pixesl_extender = null;
+    private DcMotor linear_front2 = null;
     private Servo servo_grab;
-  //  private Servo servo_grab2;
- //   private CRServo servo_rotate1;
-  //  private CRServo servo_rotate2;
-  //  private CRServo Suspensionservo;
-  //  private DcMotor Suspensionmotor = null;
+    private Servo Servo_bucket;
+    private Servo servo_arm_2;
+    // private CRServo drone_servo;2
+    // private DcMotor pixesl_extender = null;
+    //private Servo servo_grab;
+    //  private Servo servo_grab2;
+    //   private CRServo servo_rotate1;
+    //  private CRServo servo_rotate2;
+    //  private CRServo Suspensionservo;
+    //  private DcMotor Suspensionmotor = null;
 
 
     boolean x_changed = false;
     boolean dpad_l2_changed = false;
     boolean dpad_r2_changed = false;
-
-
 
 
     @Override
@@ -84,16 +86,24 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
         leftBackDrive = hardwareMap.get(DcMotor.class, "drivelb");
         rightFrontDrive = hardwareMap.get(DcMotor.class, "driverf");
         rightBackDrive = hardwareMap.get(DcMotor.class, "driverb");
-        Linear_up =hardwareMap.get(DcMotor.class, "Slide_up");
-        servo_grab = hardwareMap.get(Servo.class, "SGrab");
+        Linear_up = hardwareMap.get(DcMotor.class, "Linear_up");
+        Servo_bucket = hardwareMap.get(Servo.class, "SBucket");
+        //servo_grab = hardwareMap.get(Servo.class, "SGrab");
         linear_front = hardwareMap.get(DcMotor.class, "Slide_forward");
-       /** drone_servo = hardwareMap.get(CRServo.class, "drone_servo");
-        pixesl_extender = hardwareMap.get(DcMotor.class, "articulator");
-        Suspensionservo = hardwareMap.get(CRServo.class, "Suspensionservo");
-        Suspensionmotor = hardwareMap.get(DcMotor.class, "Suspensionmotor");;
-        servo_grab2 = hardwareMap.get(Servo.class, "SGrab2");
-        servo_rotate1 = hardwareMap.get(CRServo.class, "SRotate1");
-        servo_rotate2 = hardwareMap.get(CRServo.class, "SRotate2");**/
+        linear_front2 = hardwareMap.get(DcMotor.class, "Slide_forward2");
+        //intake_spinning = hardwareMap.get(CRServo.class, "intake_spinning");
+        //servo_arm_1 = hardwareMap.get(Servo.class, "servoarm1");
+        //servo_arm_2 = hardwareMap.get(Servo.class, "servoarm2");
+        linear_front.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        linear_front.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+        /** drone_servo = hardwareMap.get(CRServo.class, "drone_servo");
+         pixesl_extender = hardwareMap.get(DcMotor.class, "articulator");
+         Suspensionservo = hardwareMap.get(CRServo.class, "Suspensionservo");
+         Suspensionmotor = hardwareMap.get(DcMotor.class, "Suspensionmotor");;
+         servo_grab2 = hardwareMap.get(Servo.class, "SGrab2");
+         servo_rotate1 = hardwareMap.get(CRServo.class, "SRotate1");
+         servo_rotate2 = hardwareMap.get(CRServo.class, "SRotate2");**/
 
         // ########################################################################################
         // !!!            IMPORTANT Drive Information. Test your motor directions.            !!!!!
@@ -112,12 +122,13 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
         rightBackDrive.setDirection(DcMotor.Direction.FORWARD);
         linear_front.setDirection(DcMotorSimple.Direction.FORWARD);
 
+
         Linear_up.setDirection(DcMotor.Direction.REVERSE);
         //pixesl_extender.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-       //ixesl_extender.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-       //uspensionmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-       //uspensionmotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
-       //uspensionmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        //ixesl_extender.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //uspensionmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //uspensionmotor.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+        //uspensionmotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         //xesl_extender.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // Wait for the game to start (driver presses PLAY)
@@ -130,7 +141,6 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
         // run until the end of the match (driver presses STOP)
         while (opModeIsActive()) {
             double max;
-
 
 
             // POV Mode uses left joystick to go forward & strafe, and right joystick to rotate.
@@ -170,37 +180,60 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
             rightBackDrive.setPower(RBP);
             //Spinner Example Code
 
-            if (gamepad1.a) {
+            if (gamepad2.right_bumper) {
                 Linear_up.setPower(0.6);
             } else {
-                Linear_up.setPower(0);}
-            if(gamepad1.b) {
+                Linear_up.setPower(0);
+            }
+
+
+            if (gamepad2.left_bumper) {
                 Linear_up.setPower(-0.6);
-            }else {
+            } else {
                 Linear_up.setPower(0);
             }
             // Start
+            /*if (gamepad2.left_stick_button) {
+                servo_grab.setPosition(gamepad2.left_stick_y);
+            }*/
 
 
-            if (gamepad1.x) {
+            if (gamepad1.x) {// & (linear_front.getCurrentPosition()<50/2)) {
+                linear_front.setPower(.5);
+                linear_front2.setPower(.5);
+            } else if (gamepad1.y) {// & (linear_front.getCurrentPosition()>2)) {
+                linear_front.setPower(-.5);
+                linear_front2.setPower(-.5);
+            } else {
+                linear_front.setPower(0);
+                linear_front2.setPower(0);
+            }
+
+/*            if (gamepad1.x) {
                 linear_front.setPower(1);
-            } else if (gamepad1.y) {
+            }else if (gamepad1.y) {
                 linear_front.setPower(-1);
             }else {
-                linear_front.setPower(0);}
-
-            if (gamepad1.a) {
-                linear_front.setPower(1);
-            } else if (gamepad1.b) {
-                linear_front.setPower(-1);
-            }else {
-                linear_front.setPower(0);}
+                linear_front.setPower(0);
+            }*/
 
 
+                    /*if (gamepad2.x) {
+                        servo_arm_2.setPosition(.7);
+                    } else if (gamepad2.y) {
+                        servo_arm_2.setPosition(.2);
+                    }
+*/
+                   /* if (gamepad2.a) {
+                        servo_arm_1.setPosition(.35);
+                    } else {
+                        servo_arm_1.setPosition(.15);
+                    }*/
+            if (gamepad2.dpad_down) {
+                Servo_bucket.setPosition(0);
+            } else Servo_bucket.setPosition(1);
 
-
-
-            //End
+                    //End
           /*if (gamepad2.dpad_up) {
                 pixesl_extender.setPower(1.0);
             } else if (gamepad2.dpad_down) {
@@ -236,23 +269,23 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
             } else if (!gamepad2.right_bumper) dpad_l2_changed = false;
                */
 
-            // This is test code:
-            //
-            // Uncomment the following code to test your motor directions.
-            // Each button should make the corresponding motor run FORWARD.
-            //   1) First get all the motors to take to correct positions on the robot
-            //      by adjusting your Robot Configuration if necessary.
-            //   2) Then make sure they run in the correct direction by modifying the
-            //      the setDirection() calls above.
-            // Once the correct motors move in the correct direction re-comment this code.
-            //servo_grab.
-            if (gamepad2.dpad_up) {
+                    // This is test code:
+                    //
+                    // Uncomment the following code to test your motor directions.
+                    // Each button should make the corresponding motor run FORWARD.
+                    //   1) First get all the motors to take to correct positions on the robot
+                    //      by adjusting your Robot Configuration if necessary.
+                    //   2) Then make sure they run in the correct direction by modifying the
+                    //      the setDirection() calls above.
+                    // Once the correct motors move in the correct direction re-comment this code.
+                    //servo_grab.
+           /* if (gamepad2.dpad_up) {
                 servo_grab.setPosition(0);
             }else if(gamepad2.dpad_down) {
                 servo_grab.setPosition(1);
             }else {
                 servo_grab.setPosition(.5);
-            }
+            }*/
 
             telemetry.update();
 
@@ -264,19 +297,17 @@ public class BasicOmniOpMode_Linear extends LinearOpMode {
             */
 
             // Send calculated power to wheels
-            telemetry.addData("Status", "Run Time: " + runtime);
-            telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);
-            telemetry.addData("Back  left/Right", "%4.2f, %4.2f", leftBackPower, rightBackPower);
-            telemetry.addData("Gamepad A", "%b", gamepad1.a);
+
+
             telemetry.update();
 
-           /*f (gamepad1.a) {
+           /*if (gamepad1.a) {
                 drone_servo.setPower(1);
             } else {
                 drone_servo.setPower(0);
             }*/
-            // Put loop blocks here.
+                    // Put loop blocks here.
 
-        }// while Opmode
-    }//RunOpmode
-}//LinearOpmode
+            }// while Opmode
+        }//RunOpmode
+    }//@TeleOP

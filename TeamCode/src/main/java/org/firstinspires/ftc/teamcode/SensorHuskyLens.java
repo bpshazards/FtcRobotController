@@ -65,14 +65,14 @@ public class SensorHuskyLens extends LinearOpMode {
     private final int READ_PERIOD = 1;
 
     private HuskyLens huskyLens;
-    private DcMotor         leftBackDrive   = null;
-    private DcMotor         rightBackDrive  = null;
-    private DcMotor         leftFrontDrive   = null;
-    private DcMotor         rightFrontDrive  = null;
-   // private String[] block_colors = ['No', 'Blue', 'Red'];
+    private DcMotor leftBackDrive = null;
+    private DcMotor rightBackDrive = null;
+    private DcMotor leftFrontDrive = null;
+    private DcMotor rightFrontDrive = null;
+
+    // private String[] block_colors = ['No', 'Blue', 'Red'];
     //@Override
-    public void runOpMode()
-    {
+    public void runOpMode() {
         huskyLens = hardwareMap.get(HuskyLens.class, "huskylens");
         leftFrontDrive = hardwareMap.get(DcMotor.class, "drivelf");
         leftBackDrive = hardwareMap.get(DcMotor.class, "drivelb");
@@ -88,13 +88,18 @@ public class SensorHuskyLens extends LinearOpMode {
          * This sample rate limits the reads solely to allow a user time to observe
          * what is happening on the Driver Station telemetry.  Typical applications
          * would not likely rate limit.
+         *
+
          */
+
         Deadline rateLimit = new Deadline(READ_PERIOD, TimeUnit.SECONDS);
 
         /*
          * Immediately expire so that the first time through we'll do the read.
          */
+
         rateLimit.expire();
+
 
         /*
          * Basic check to see if the device is alive and communicating.  This is not
@@ -123,9 +128,9 @@ public class SensorHuskyLens extends LinearOpMode {
          * within the OpMode by calling selectAlgorithm() and passing it one of the values
          * found in the enumeration HuskyLens.Algorithm.
          */
-        //huskyLens.selectAlgorithm(HuskyLens.Algorithm.TAG_RECOGNITION);
-        huskyLens.selectAlgorithm(HuskyLens.Algorithm.OBJECT_CLASSIFICATION);
-        huskyLens.selectAlgorithm(HuskyLens.Algorithm.COLOR_RECOGNITION);
+        huskyLens.selectAlgorithm(HuskyLens.Algorithm.TAG_RECOGNITION);
+        //huskyLens.selectAlgorithm(HuskyLens.Algorithm.OBJECT_CLASSIFICATION);
+        //huskyLens.selectAlgorithm(HuskyLens.Algorithm.COLOR_RECOGNITION);
         telemetry.update();
         waitForStart();
 
@@ -135,7 +140,7 @@ public class SensorHuskyLens extends LinearOpMode {
          *
          * Note again that the device only recognizes the 36h11 family of tags out of the box.
          */
-        while(opModeIsActive()) {
+        while (opModeIsActive()) {
             if (!rateLimit.hasExpired()) {
                 continue;
             }
@@ -151,28 +156,25 @@ public class SensorHuskyLens extends LinearOpMode {
              * Returns an empty array if no objects are seen.
              */
 
-
-
-
-
+            /*
             HuskyLens.Block[] blocks = huskyLens.blocks();
 
             telemetry.addData("Block count", blocks.length);
             for (int i = 0; i < blocks.length; i++) {
                 telemetry.addData("Block", blocks[i].toString());
 
-                int thisObjectID = blocks[i].id;
-                telemetry.addData("Object", thisObjectID);
+                 int thisObjectID = blocks[i].id;
+                   telemetry.addData("Object", thisObjectID);
 
                 int thisColorID = blocks[i].id;                      // save the current recognition's Color ID
                 telemetry.addData("Color", thisColorID);
 
-              /*if (block_colors[thisColorID]=="Blue") {
-                  telemetry.addData("Color", block_colors[thisColorID]);
-                    
-                  }   */
+                if (block_color[thisColorID] == "Blue") {
+                   telemetry.addData("Color", block_colors[thisColorID]);
+                */
+
+
+                telemetry.update();
             }
-            telemetry.update();
         }
     }
-}
