@@ -30,6 +30,7 @@
 package org.firstinspires.ftc.teamcode;
 
 import android.hardware.Sensor;
+import android.net.LinkAddress;
 
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
@@ -120,6 +121,7 @@ public class Hazards_2024_Robot_Teleop extends LinearOpMode {
         Linear_Forward.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         Linear_up.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Linear_up.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        Linear_up.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
 
         // ########################################################################################
         // !!!            IMPORTANT Drive Information. Test your motor directions.            !!!!!
@@ -250,7 +252,7 @@ public class Hazards_2024_Robot_Teleop extends LinearOpMode {
                 } else if (gamepad2.b) {
                     Servo_bucket.setPower(-0.8);
                 }
-                if (gamepad2.dpad_up && Linear_up.getCurrentPosition()<16400) {
+                if (gamepad2.dpad_up && Linear_up.getCurrentPosition()<3200) {
                     Linear_up.setPower(1);
                 } else if (gamepad2.dpad_down && (Linear_up.getCurrentPosition()>1  || Linear_Up_Dist.getDistance(DistanceUnit.CM)>10.0)) {
                     Linear_up.setPower(-1);
@@ -269,7 +271,9 @@ public class Hazards_2024_Robot_Teleop extends LinearOpMode {
             telemetry.addData("Linear_Up_Dist (cm)",Linear_Up_Dist.getDistance(DistanceUnit.CM));
             telemetry.addData("ServoBucket:",Servo_bucket.getPower());
 
-
+            if (gamepad1.y) {
+                Servo_bucket.setPower(1);
+            }
 
             telemetry.addData("Status", "Run Time: " + runtime);
             //telemetry.addData("Front left/Right", "%4.2f, %4.2f", leftFrontPower, rightFrontPower);

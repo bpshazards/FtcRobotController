@@ -18,7 +18,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.YawPitchRollAngles;
 
 @Autonomous(name="Robot: dev_auto_drive", group="Dev")
-//@Disabled
+@Disabled
 public class dev_auto_drive extends LinearOpMode {
 
     /* Declare OpMode members. */

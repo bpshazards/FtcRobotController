@@ -11,6 +11,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
+
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DistanceSensor;
 import com.qualcomm.robotcore.hardware.Servo;
@@ -26,6 +28,7 @@ import org.firstinspires.ftc.robotcore.external.navigation.DistanceUnit;
  */
 
 @Autonomous(name="Sample Autonomous", group = "Mr. Phil")
+@Disabled
 public class SampleAutonomous extends LinearOpMode {
     // get an instance of the "Robot" class.
     private SimplifiedOdometryRobot robot = new SimplifiedOdometryRobot(this);
